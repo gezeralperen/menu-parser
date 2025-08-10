@@ -166,4 +166,5 @@ export const parsedMenuTR: ParsedMenu = {
     "Bazı yemekler çalıştırma/iniş sırasında servis dışı olabilir.",
     "Tüm yemekler İslami hassasiyetlerle hazırlanır.",
   ],
+  suggestions: ["Muebbet nedir?", "Hangi seçenekler vejeteryan?"],
 };

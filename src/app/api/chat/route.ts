@@ -1,6 +1,6 @@
 // src/app/api/chat/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import type { ParsedMenu } from "@/types/menu";
+import type { MenuItem, ParsedMenu } from "@/types/menu";
 
 import { ChatOpenAI } from "@langchain/openai";
 import { PromptTemplate } from "@langchain/core/prompts";
@@ -77,6 +77,7 @@ GUIDANCE:
 - If information is not in the menu, you may add brief, widely-known context about that dish’s usual style—clearly marked as typical, not guaranteed.
 - For health/allergen certainty or exact preparation, add a soft disclaimer like: "Kesin bilgi için kabin ekibine danışın."
 - Do NOT invent prices or availability not shown. If something isn’t listed, say it’s not specified.
+- If the request is unrelated to the menu or food, simply say: "Üzgünüm, bu konuda yardımcı olamam." in Turkish or "I cannot help with that." in English (based on {localeName}) and do not provide any suggestions.
 
 MENU (compact JSON):
 {menu_outline}
@@ -163,7 +164,6 @@ async function runChain({
     // Strong instruction to return ONLY JSON
     format_instructions: parser.getFormatInstructions(),
   };
-  console.log(invoke);
   const raw = await rawChain.invoke(invoke);
 
   // 2) Try strict parse; if it fails, run through a fixer model once

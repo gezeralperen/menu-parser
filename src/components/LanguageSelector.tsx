@@ -61,7 +61,11 @@ export default function LanguageSelector() {
           aria-label={t("language.searchPlaceholder")}
         />
 
-        <div role="listbox" aria-label="Languages" className="grid-auto-min">
+        <div
+          role="listbox"
+          aria-label={t("language.listAria")}
+          className="grid-auto-min"
+        >
           {list.map((lang) => {
             const isSelected = code === lang.code;
             return (

@@ -1,18 +1,96 @@
 // app/menu/MenuView.tsx
 "use client";
+
 import { AppHeader } from "@/components/AppHeader";
-import type { ParsedMenu } from "@/types/menu";
+import type {
+  ChoiceGroup,
+  MenuItem,
+  MenuItemGroup,
+  ParsedMenu,
+} from "@/types/menu";
 import "@/styles/menu.css";
+import { useI18n } from "@/i18n/useI18n";
+import { motion, Variants } from "framer-motion";
 
 export function MenuView({ menu }: { menu: ParsedMenu }) {
+  const { t } = useI18n();
+
+  // ---- animation variants ----
+  const containerStagger: Variants = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
+  };
+  const itemFade: Variants = {
+    hidden: { opacity: 0, y: 6 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: "easeOut" } },
+  };
+  const heroFade: Variants = {
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
+  };
+
+  // ---- helpers ----
+  function isMenuItemGroupArray(
+    options: ChoiceGroup["options"]
+  ): options is MenuItemGroup[] {
+    return (
+      Array.isArray(options) && options.length > 0 && "items" in options[0]!
+    );
+  }
+
+  function optionInner(it: MenuItem) {
+    return (
+      <>
+        <div className="option-main">
+          <span className="option-name">{it.name.text}</span>
+          {it.description?.text && (
+            <span className="option-desc">{it.description.text}</span>
+          )}
+        </div>
+        <div className="option-meta">
+          {it.price && <span>{it.price}</span>}
+          {it.dietary_labels?.length ? (
+            <span> · {it.dietary_labels.join(", ")}</span>
+          ) : null}
+          {it.allergens?.length ? (
+            <span>
+              {" "}
+              · {t("menu.allergensLabel")}: {it.allergens.join(", ")}
+            </span>
+          ) : null}
+        </div>
+      </>
+    );
+  }
+
+  function labelForPeriod(
+    p: NonNullable<ParsedMenu["sections"][number]["period"]>
+  ) {
+    return p === "takeoff"
+      ? t("menu.period.takeoff")
+      : p === "before_landing"
+      ? t("menu.period.before_landing")
+      : t("menu.period.cruise");
+  }
+  function choose1Label(n: number = 1) {
+    return `Choose ${n}`;
+  }
+  function chooseRangeLabel(min: number, max: number) {
+    return `Choose ${min}–${max}`;
+  }
+
+  // ---- render ----
   return (
-    <main className="container menu--clean">
+    <motion.div
+      className="container menu--clean"
+      variants={containerStagger}
+      initial="hidden"
+      animate="show"
+    >
       <AppHeader />
 
-      <header className="menu-hero">
-        <h1 className="menu-title">
-          {menu.locale === "tr" ? "Uçuş Menünüz" : "Your In-Flight Menu"}
-        </h1>
+      <motion.header className="menu-hero" variants={heroFade}>
+        <h1 className="menu-title">{t("menu.title")}</h1>
         {menu.warnings?.length ? (
           <ul className="menu-warnings">
             {menu.warnings.map((w, i) => (
@@ -22,26 +100,34 @@ export function MenuView({ menu }: { menu: ParsedMenu }) {
             ))}
           </ul>
         ) : null}
-      </header>
+      </motion.header>
 
-      <div className="menu-grid">
+      <motion.div className="menu-grid" variants={containerStagger}>
         {menu.sections.map((sec) => (
-          <section key={sec.id} className="menu-section">
+          <motion.section
+            key={sec.id}
+            className="menu-section"
+            variants={itemFade}
+          >
             <div className="section-head">
               <h2 className="section-title">{sec.name.text}</h2>
               {sec.period && (
                 <span className="pill pill-ghost">
-                  {labelForPeriod(sec.period, menu.locale)}
+                  {labelForPeriod(sec.period)}
                 </span>
               )}
             </div>
 
-            <ul className="section-entries">
+            <motion.ul className="section-entries" variants={containerStagger}>
               {sec.entries.map((entry) => {
                 if (entry.type === "item") {
                   const it = entry.item;
                   return (
-                    <li key={it.id} className="entry-row">
+                    <motion.li
+                      key={it.id}
+                      className="entry-row"
+                      variants={itemFade}
+                    >
                       <div className="entry-main">
                         <strong className="entry-name">{it.name.text}</strong>
                         {it.description?.text && (
@@ -63,7 +149,7 @@ export function MenuView({ menu }: { menu: ParsedMenu }) {
                           ))}
                         </div>
                       </div>
-                    </li>
+                    </motion.li>
                   );
                 }
 
@@ -71,86 +157,71 @@ export function MenuView({ menu }: { menu: ParsedMenu }) {
                 const g = entry.group;
                 const range =
                   g.min === g.max
-                    ? choose1Label(menu.locale, g.min)
-                    : chooseRangeLabel(g.min, g.max, menu.locale);
+                    ? choose1Label(g.min)
+                    : chooseRangeLabel(g.min, g.max);
 
                 return (
-                  <li key={g.id} className="choice">
+                  <motion.li key={g.id} className="choice" variants={itemFade}>
                     <div className="choice-head">
-                      <div className="stack">
-                        <strong className="choice-title">
-                          {g.title?.text ?? range}
-                        </strong>
-                        {g.prompt?.text && (
-                          <p className="choice-prompt">{g.prompt.text}</p>
-                        )}
-                      </div>
-                      <span className="pill pill-brand">{range}</span>
+                      <strong className="choice-title">
+                        {g.title?.text ?? range}
+                      </strong>
+                      <span className="pill pill-outline">{range}</span>
                     </div>
 
-                    <ul className="choice-grid">
-                      {g.options.map((opt) => (
-                        <li key={opt.id} className="option-row">
-                          <div className="option-main">
-                            <span className="option-name">{opt.name.text}</span>
-                            {opt.description?.text && (
-                              <span className="option-desc">
-                                {opt.description.text}
-                              </span>
-                            )}
-                          </div>
-                          <div className="option-meta">
-                            {opt.price && (
-                              <span className="price">{opt.price}</span>
-                            )}
-                            <div className="tags">
-                              {opt.dietary_labels?.map((d) => (
-                                <span key={d} className="pill pill-soft">
-                                  {d}
-                                </span>
-                              ))}
-                              {opt.allergens?.map((a) => (
-                                <span key={a} className="pill pill-outline">
-                                  {a}
-                                </span>
-                              ))}
+                    {isMenuItemGroupArray(g.options) ? (
+                      <motion.ul
+                        className="choice-grid"
+                        variants={containerStagger}
+                      >
+                        {g.options.map((grp) => (
+                          <motion.li key={grp.id} variants={itemFade}>
+                            <div className="choice-prompt">
+                              {grp.id.replace(/[-_]/g, " ")}
                             </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
+                            <motion.ul
+                              className="section-entries"
+                              variants={containerStagger}
+                            >
+                              {grp.items.map((opt) => (
+                                <motion.li
+                                  key={opt.id}
+                                  className="option-row"
+                                  variants={itemFade}
+                                >
+                                  {optionInner(opt)}
+                                </motion.li>
+                              ))}
+                            </motion.ul>
+                          </motion.li>
+                        ))}
+                      </motion.ul>
+                    ) : (
+                      <motion.ul
+                        className="choice-grid"
+                        variants={containerStagger}
+                      >
+                        {g.options.map((opt) => (
+                          <motion.li
+                            key={opt.id}
+                            className="option-row"
+                            variants={itemFade}
+                          >
+                            {optionInner(opt)}
+                          </motion.li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </motion.li>
                 );
               })}
-            </ul>
-          </section>
+            </motion.ul>
+          </motion.section>
         ))}
-      </div>
-      <div className="safe-area" />
-    </main>
-  );
-}
+      </motion.div>
 
-function labelForPeriod(
-  p: NonNullable<ParsedMenu["sections"][number]["period"]>,
-  locale?: string
-) {
-  if (locale === "tr") {
-    return p === "takeoff"
-      ? "Kalkış"
-      : p === "before_landing"
-      ? "İnişten Önce"
-      : "Uçuş";
-  }
-  return p === "takeoff"
-    ? "Takeoff"
-    : p === "before_landing"
-    ? "Before landing"
-    : "Cruise";
-}
-function choose1Label(locale?: string, n: number = 1) {
-  return locale === "tr" ? `Seçim: ${n}` : `Choose ${n}`;
-}
-function chooseRangeLabel(min: number, max: number, locale?: string) {
-  return locale === "tr" ? `Seçim: ${min}–${max}` : `Choose ${min}–${max}`;
+      <div style={{ height: "40vh" }} />
+      <div className="safe-area" />
+    </motion.div>
+  );
 }

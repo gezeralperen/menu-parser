@@ -11,6 +11,8 @@ import { Progress } from "@/components/ui/Progress";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/Toast";
 import { useMenu } from "@/context/MenuContext";
+import { useChat } from "@/context/ChatContext";
+import { ParsedMenu } from "@/types/menu";
 
 export default function Scanner() {
   const { ready, code } = useLanguage();
@@ -28,7 +30,7 @@ export default function Scanner() {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
   const { setMenu } = useMenu();
-
+  const { setSuggestions } = useChat();
   const { addToast } = useToast();
 
   if (!ready) {
@@ -55,8 +57,8 @@ export default function Scanner() {
 
     // 3) Show progress while uploading/processing
     const timer = setInterval(
-      () => setProgress((p) => Math.min(100, p + 10)),
-      200
+      () => setProgress((p) => Math.min(100, p + 5)),
+      600
     );
 
     try {
@@ -93,6 +95,14 @@ export default function Scanner() {
 
       // 5) Stash result (simple approach) and navigate
       setMenu(payload);
+      if (
+        Array.isArray(payload.suggestions) &&
+        payload.suggestions.length > 0
+      ) {
+        setSuggestions(payload.suggestions);
+      } else {
+        setSuggestions([]); // optional: clear if none
+      }
       clearInterval(timer);
       setProgress(100);
       router.push("/menu"); // build this page to read from sessionStorage
@@ -120,7 +130,11 @@ export default function Scanner() {
       </div>
 
       <section className="stack">
-        <div className="scan-frame" role="region" aria-label="Camera preview">
+        <div
+          className="scan-frame"
+          role="region"
+          aria-label={t("scan.cameraPreviewAria")}
+        >
           <video
             ref={videoRef}
             className={`scan-video ${status !== "live" ? "hidden" : ""}`}
@@ -130,7 +144,7 @@ export default function Scanner() {
           <canvas
             ref={canvasRef}
             className={`scan-canvas ${status === "live" ? "hidden" : ""}`}
-            aria-label="Captured menu image"
+            aria-label={t("scan.capturedImageAria")}
           />
         </div>
       </section>

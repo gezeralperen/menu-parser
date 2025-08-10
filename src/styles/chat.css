@@ -32,18 +32,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  translate: 0 100%;
+
   background: color-mix(in srgb, var(--surface) 84%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   z-index: 80;
-  transition: translate 0.28s ease;
+
   box-shadow: 0 -8px 30px color-mix(in srgb, var(--fg) 10%, transparent);
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
-}
-.chat-panel.is-open {
-  translate: 0 0;
 }
 
 .chat-header {
@@ -125,10 +122,12 @@
   background-color: var(--brand);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
+  margin-left: 45px;
 }
 .msg-assistant {
   justify-self: start;
   color: var(--fg);
+  margin-right: 45px;
 }
 
 /* Input bar */
@@ -173,6 +172,64 @@
     transition: none;
   }
   .chat-toggle {
+    transition: none;
+  }
+}
+
+/* Suggested questions (tap chips) */
+.chat-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 12px 16px;
+  border-top: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+  align-items: end;
+}
+
+.chat-suggestion {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  text-align: end;
+  line-height: 1;
+  width: fit-content;
+  color: var(--fg);
+  background: var(--surface-muted);
+  box-shadow: 0 0 0 0 transparent;
+  transition: background-color 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.chat-suggestion:hover {
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface-muted));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-1);
+}
+
+.chat-suggestion:active {
+  transform: translateY(0);
+  background: color-mix(in srgb, var(--brand) 16%, var(--surface-muted));
+}
+
+.chat-suggestion:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 60%, transparent);
+}
+
+/* Compact on small screens */
+@media (max-width: 420px) {
+  .chat-suggestion {
+    padding: 7px 10px;
+    font-size: 12.5px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .chat-suggestion {
     transition: none;
   }
 }

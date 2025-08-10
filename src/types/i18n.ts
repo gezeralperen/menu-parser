@@ -5,12 +5,14 @@ export type Dictionary = {
   common: {
     appTitle: string;
     poweredByAi: string;
+    logoAria: string;
   };
   language: {
     chooseLanguage: string;
     subtitle: string;
     searchPlaceholder: string;
     continue: string;
+    listAria: string;
   };
   scan: {
     title: string;
@@ -27,6 +29,28 @@ export type Dictionary = {
     permissionDeny: string;
     lightingWarning: string;
     unreadableWarning: string;
+    cameraPreviewAria: string;
+    capturedImageAria: string;
+  };
+  menu: {
+    title: string;
+    allergensLabel: string;
+    period: {
+      takeoff: string;
+      cruise: string;
+      before_landing: string;
+    };
+  };
+  chat: {
+    toggleOpen: string;
+    toggleClose: string;
+    assistantTitle: string;
+    collapse: string;
+    collapseAria: string;
+    empty: string;
+    placeholder: string;
+    send: string;
+    sending: string;
   };
 };
 

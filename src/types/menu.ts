@@ -15,14 +15,19 @@ export type MenuItem = {
   notes?: string;
 };
 
+export type MenuItemGroup = {
+  id: string;
+  items: MenuItem[];
+};
+
 /** A group of mutually exclusive or multi-select choices */
 export type ChoiceGroup = {
   id: string;
-  title?: Lstr; // e.g., "Lütfen seçiminizi yapınız"
-  prompt?: Lstr; // extra UI prompt if needed
-  min: number; // minimum selections required
-  max: number; // maximum selections allowed
-  options: MenuItem[]; // the items a passenger can choose from
+  title?: Lstr;
+  prompt?: Lstr;
+  min: number;
+  max: number;
+  options: MenuItem[] | MenuItemGroup[];
 };
 
 /** Section entries can be a plain item or a choice group */
@@ -44,4 +49,5 @@ export type ParsedMenu = {
   currency?: string; // optional global hint if printed
   sections: MenuSection[];
   warnings?: string[];
+  suggestions: string[];
 };

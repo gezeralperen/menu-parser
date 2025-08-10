@@ -8,7 +8,7 @@ export function AppHeader() {
   return (
     <header className="scan-header">
       <div className="cluster">
-        <Logo aria-label="Airline logo" className="logo" />
+        <Logo aria-label={t("common.logoAria")} className="logo" />
         <strong className="body bold">{t("common.appTitle")}</strong>
       </div>
       <Badge>{t("common.poweredByAi")}</Badge>
