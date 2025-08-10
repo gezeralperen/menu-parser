@@ -1,0 +1,211 @@
+/* ===== Hierarchy-first, borderless, premium ===== */
+
+/* Page rhythm */
+.menu--clean {
+  display: grid;
+  gap: clamp(28px, 4vw, 56px); /* bigger section spacing */
+}
+
+/* Hero */
+.menu-hero {
+  display: grid;
+  gap: 12px;
+  margin-block: 4px;
+}
+.menu-title {
+  font-size: clamp(30px, 2.8vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Sections layout */
+.menu-grid {
+  display: grid;
+  gap: clamp(32px, 4vw, 48px);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .menu-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Section head: strong category presence */
+.menu-section {
+  display: grid;
+  gap: clamp(18px, 2vw, 28px);
+  border-bottom: 1px solid var(--surface-muted);
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
+.section-title {
+  font-size: clamp(20px, 1.6vw, 26px); /* CATEGORY level */
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+/* Entries list: bigger gaps to separate dishes */
+.section-entries {
+  display: grid;
+  gap: clamp(16px, 2vw, 22px);
+}
+
+/* Dish row: clear dish > description > meta ladder */
+.entry-row {
+  display: grid;
+  gap: 8px; /* dish > description spacing */
+  padding-block: 4px; /* tiny breathing room, no visual chrome */
+}
+
+.entry-main {
+  display: grid;
+  gap: 6px;
+}
+.entry-name {
+  font-size: clamp(16px, 1.3vw, 18px); /* DISH level */
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.entry-desc {
+  color: var(--muted-fg);
+  font-size: clamp(14px, 1.05vw, 15px); /* DESCRIPTION level */
+  line-height: 1.5;
+  max-width: 65ch; /* keep readable measure */
+}
+
+/* Meta sits distinctly below content and stays quiet */
+.entry-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px; /* separate from description */
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--muted-fg);
+}
+.price {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+/* Choice group: sits between Category and Dish levels */
+.choice {
+  display: grid;
+  gap: 14px;
+}
+.choice-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.choice-title {
+  font-size: clamp(15px, 1.2vw, 17px); /* between category and dish */
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+.choice-prompt {
+  color: var(--muted-fg);
+  font-size: 14px;
+}
+
+/* Options use a subtler scale than main dishes */
+.choice-grid {
+  display: grid;
+  gap: clamp(10px, 1.6vw, 16px);
+  grid-template-columns: 1fr;
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  border: 1px solid var(--surface-muted);
+}
+@media (min-width: 700px) {
+  .choice-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.option-row {
+  display: grid;
+  gap: 6px;
+  padding: 3px 0px;
+  border-radius: 12px; /* shape only; no outlines */
+  transition: background-color 0.2s ease;
+}
+.option-row:hover {
+  background: color-mix(in srgb, var(--brand) 6%, transparent);
+}
+.option-main {
+  display: grid;
+  gap: 4px;
+}
+.option-name {
+  font-weight: 600;
+  font-size: clamp(15px, 1.1vw, 16px); /* below dish level */
+  letter-spacing: -0.005em;
+}
+.option-desc {
+  color: var(--muted-fg);
+  font-size: 13.5px;
+  line-height: 1.45;
+  max-width: 65ch;
+}
+
+.option-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--muted-fg);
+}
+
+/* Pills are quiet accents (no borders) */
+.pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  border: none;
+}
+.pill-muted {
+  background: var(--surface-muted);
+  color: var(--fg);
+}
+.pill-soft {
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  color: var(--fg);
+}
+.pill-outline {
+  background: color-mix(in srgb, var(--fg) 6%, transparent);
+  color: var(--fg);
+}
+.pill-brand {
+  background: var(--brand);
+  color: var(--bg);
+}
+.pill-ghost {
+  background: color-mix(in srgb, var(--fg) 6%, transparent);
+  color: var(--fg);
+}
+
+/* Subtle top rhythm on first entry group inside a section */
+.menu-section .section-entries > li:first-child {
+  margin-top: 2px;
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .option-row {
+    transition: none;
+  }
+}
