@@ -6,6 +6,7 @@ import "@/styles/components.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ToastProvider } from "@/components/ui/Toast";
 import { MenuProvider } from "@/context/MenuContext";
+import { ChatProvider } from "@/context/ChatContext";
 
 export const metadata: Metadata = {
   title: "In-Flight Menu Assistant",
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body>
         <LanguageProvider>
           <ToastProvider>
-            <MenuProvider>{children}</MenuProvider>
+            <MenuProvider>
+              <ChatProvider>{children}</ChatProvider>
+            </MenuProvider>
           </ToastProvider>
         </LanguageProvider>
       </body>

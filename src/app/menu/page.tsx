@@ -1,4 +1,5 @@
 "use client";
+import { ChatOverlay } from "@/components/ChatOverlay";
 import { MenuView } from "@/components/MenuView";
 import { useMenu } from "@/context/MenuContext";
 
@@ -16,6 +17,7 @@ export default function MenuPage() {
   return (
     <main>
       <MenuView menu={menu} />
+      <ChatOverlay />
     </main>
   );
 }

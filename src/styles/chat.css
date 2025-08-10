@@ -1,0 +1,178 @@
+/* ===== Bottom Chat Overlay (borderless, premium) ===== */
+
+/* Toggle button that floats above content */
+.chat-toggle {
+  position: fixed;
+  bottom: clamp(16px, 3.2vw, 22px);
+  right: clamp(16px, 3.2vw, 22px);
+  z-index: 60;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: var(--bg);
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: var(--shadow-2);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+}
+.chat-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-3);
+}
+.chat-toggle.is-open {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Panel shell */
+.chat-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  translate: 0 100%;
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  z-index: 80;
+  transition: translate 0.28s ease;
+  box-shadow: 0 -8px 30px color-mix(in srgb, var(--fg) 10%, transparent);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+.chat-panel.is-open {
+  translate: 0 0;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px 16px;
+}
+.chat-title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Small grabber handle to hint collapse/drag */
+.chat-grabber {
+  appearance: none;
+  display: block;
+  width: 64px;
+  height: 18px;
+  margin: 8px auto 0;
+  border: none;
+  background: none;
+  position: relative;
+  cursor: grab;
+}
+.chat-grabber::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fg) 18%, transparent);
+}
+.chat-grabber:active {
+  cursor: grabbing;
+}
+
+/* Stream area */
+.chat-body {
+  max-height: min(48vh, 480px);
+  overflow: auto;
+  padding: 0 16px;
+  display: grid;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* stop pull-to-refresh from bubbling */
+  touch-action: pan-y; /* allow vertical scroll in panel */
+}
+
+.chat-collapse {
+  background: transparent;
+  border: none;
+  color: var(--muted-fg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-empty {
+  color: var(--muted-fg);
+  padding: 8px 0 14px 0;
+  font-size: 14px;
+}
+.chat-stream {
+  display: grid;
+  gap: 10px;
+  padding: 8px 0 14px 0;
+}
+.chat-msg {
+  max-width: 70ch;
+  line-height: 1.5;
+  font-size: 14px;
+}
+.msg-user {
+  justify-self: end;
+  text-align: right;
+  color: var(--bg);
+  background-color: var(--brand);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+}
+.msg-assistant {
+  justify-self: start;
+  color: var(--fg);
+}
+
+/* Input bar */
+.chat-inputbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 12px 16px 16px 16px;
+  border-top: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.chat-input {
+  resize: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-muted);
+  border: none;
+  outline: none;
+  font: inherit;
+  color: var(--fg);
+  line-height: 1.35;
+  max-height: 120px;
+  overflow: auto;
+}
+.chat-input::placeholder {
+  color: var(--muted-fg);
+}
+.chat-send {
+  align-self: end;
+}
+
+/* Safe area for iOS home indicator */
+.chat-safearea {
+  height: env(safe-area-inset-bottom, 0);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .chat-panel {
+    transition: none;
+  }
+  .chat-toggle {
+    transition: none;
+  }
+}
