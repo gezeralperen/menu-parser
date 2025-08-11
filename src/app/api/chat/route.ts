@@ -109,7 +109,11 @@ async function runChain({
     question,
   };
 
-  return await chain.invoke(invoke);
+  const response = await chain.invoke(invoke);
+  return {
+    ...response,
+    suggestions: response.suggestions ?? [],
+  };
 }
 
 // --- Route -------------------------------------------------------------------
