@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 import { useToast } from "./ui/Toast";
 import { useMenu } from "@/context/MenuContext";
 import { useChat } from "@/context/ChatContext";
-import { ParsedMenu } from "@/types/menu";
 
 export default function Scanner() {
   const { ready, code } = useLanguage();
@@ -57,8 +56,8 @@ export default function Scanner() {
 
     // 3) Show progress while uploading/processing
     const timer = setInterval(
-      () => setProgress((p) => Math.min(100, p + 5)),
-      600
+      () => setProgress((p) => Math.min(100, p + 1)),
+      250
     );
 
     try {

@@ -1,4 +1,4 @@
-import type { Dictionary } from "@/types/i18n";
+import type { Dictionary } from "@/schema/i18n";
 
 export const EN_BASE: Dictionary = {
   common: {

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { isSupportedLocale, LOCALES, SupportedLocale } from "./dictionaries";
 import { EN_BASE } from "./base";
-import { deepMerge, getByPath, type Dictionary } from "@/types/i18n";
+import { deepMerge, getByPath, type Dictionary } from "@/schema/i18n";
 
 // Build merged dictionary for current locale (fallback to EN)
 function resolveDictionary(locale: string): Dictionary {

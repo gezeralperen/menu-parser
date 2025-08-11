@@ -1,6 +1,6 @@
 import type { LanguageCode } from "@/lib/languages";
 
-import type { DeepPartial, Dictionary } from "@/types/i18n";
+import type { DeepPartial, Dictionary } from "@/schema/i18n";
 import { EN_BASE } from "./base";
 
 // Start with English as the base

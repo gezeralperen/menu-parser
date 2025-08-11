@@ -1,6 +1,6 @@
-import { ParsedMenu } from "@/types/menu";
+import { ParsedMenuRuntime } from "@/schema/menu";
 
-export const parsedMenuTR: ParsedMenu = {
+export const parsedMenuTR: ParsedMenuRuntime = {
   source: "vision-llm",
   locale: "tr",
   sections: [

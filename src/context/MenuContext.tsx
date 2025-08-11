@@ -1,18 +1,18 @@
 "use client";
 
-import { ParsedMenu } from "@/types/menu";
+import { ParsedMenuRuntime } from "@/schema/menu";
 import { createContext, useContext, useMemo, useState } from "react";
 
 type MenuState = {
-  menu: ParsedMenu | null;
-  setMenu: (m: ParsedMenu | null) => void;
+  menu: ParsedMenuRuntime | null;
+  setMenu: (m: ParsedMenuRuntime | null) => void;
   clearMenu: () => void;
 };
 
 const MenuContext = createContext<MenuState | null>(null);
 
 export function MenuProvider({ children }: { children: React.ReactNode }) {
-  const [menu, setMenu] = useState<ParsedMenu | null>(null);
+  const [menu, setMenu] = useState<ParsedMenuRuntime | null>(null);
 
   const value = useMemo<MenuState>(
     () => ({

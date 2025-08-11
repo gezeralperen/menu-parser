@@ -2,17 +2,18 @@
 "use client";
 
 import { AppHeader } from "@/components/AppHeader";
-import type {
-  ChoiceGroup,
-  MenuItem,
-  MenuItemGroup,
-  ParsedMenu,
-} from "@/types/menu";
+
 import "@/styles/menu.css";
 import { useI18n } from "@/i18n/useI18n";
 import { motion, Variants } from "framer-motion";
+import {
+  ChoiceGroup,
+  MenuItem,
+  MenuItemGroup,
+  ParsedMenuRuntime,
+} from "@/schema/menu";
 
-export function MenuView({ menu }: { menu: ParsedMenu }) {
+export function MenuView({ menu }: { menu: ParsedMenuRuntime }) {
   const { t } = useI18n();
 
   // ---- animation variants ----
@@ -64,7 +65,7 @@ export function MenuView({ menu }: { menu: ParsedMenu }) {
   }
 
   function labelForPeriod(
-    p: NonNullable<ParsedMenu["sections"][number]["period"]>
+    p: NonNullable<ParsedMenuRuntime["sections"][number]["period"]>
   ) {
     return p === "takeoff"
       ? t("menu.period.takeoff")
